@@ -11,13 +11,13 @@ import UIKit
 
 class MemeAppTextFieldDelegate: NSObject, UITextFieldDelegate {
 
+    let textAlignment = NSTextAlignment.Center
     let textAttributes = [
         NSStrokeColorAttributeName: UIColor.blackColor(),
         NSForegroundColorAttributeName: UIColor.whiteColor(),
         NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
         NSStrokeWidthAttributeName: -4.0
     ]
-    let textAlignment = NSTextAlignment.Center
     var previousText:String!
 
     // Hide keyboard upon hitting return
@@ -28,12 +28,8 @@ class MemeAppTextFieldDelegate: NSObject, UITextFieldDelegate {
 
     // Store and clean the placeholder values before the user tapped into the textfield
     func textFieldDidBeginEditing(textField: UITextField) {
-        if textField.text == "TOP" {
-            previousText = "TOP"
-            textField.text = ""
-        }
-        if textField.text == "BOTTOM" {
-            previousText = "BOTTOM"
+        if textField.text == "TOP" || textField.text == "BOTTOM" {
+            previousText = textField.text
             textField.text = ""
         }
     }
