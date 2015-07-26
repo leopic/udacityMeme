@@ -20,7 +20,6 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
     @IBOutlet var tbTop:UIToolbar!
     @IBOutlet var tbBottom:UIToolbar!
     
-    let SegueAllMemes = "showMemes"
     var memeAppTextFieldDelegate = MemeAppTextFieldDelegate()
     
     // MARK: View controller lifecycle
@@ -153,9 +152,11 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
             
             activityVC.completionWithItemsHandler = {(activityType, completed, sender, error) in
                 if completed {
-                    (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
-                    self.performSegueWithIdentifier(self.SegueAllMemes, sender: self)
-                    self.resetUI()
+                    if var appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                        appDelegate.memes.append(meme)
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                        self.resetUI()
+                    }
                 }
             }
             
@@ -164,7 +165,7 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
             let alert = UIAlertView()
             alert.delegate = self
             alert.title = "We can't share your Meme just yet"
-            alert.message = "Please make sure to add text to both fields and pick an image."
+            alert.message = "Please make sure to add text to both fields and pick an image mmmkay?."
             alert.addButtonWithTitle("OK")
             alert.show()
         }

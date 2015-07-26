@@ -9,20 +9,31 @@
 import UIKit
 
 class MemeTableViewController: UITableViewController {
-
     var memes:[Meme]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
         memes = appDelegate.memes
+        
+        // Test
+        let img = UIImage(named: "test")!
+        var testMeme = Meme(textTop: "arriba", textBottom: "abajo", image: img, memedImage: img)
+        memes.append(testMeme)
+        memes.append(testMeme)
+        memes.append(testMeme)
+        // Test
+        
+        tableView.contentInset = UIEdgeInsetsMake(66.0, 0.0, 0.0, 0.0)
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
     }
@@ -34,8 +45,15 @@ class MemeTableViewController: UITableViewController {
         cell.textLabel?.text = meme.textTop
         cell.detailTextLabel?.text = meme.textBottom
         cell.imageView?.image = meme.memedImage
-
         return cell
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if toInterfaceOrientation == UIInterfaceOrientation.LandscapeLeft || toInterfaceOrientation == UIInterfaceOrientation.LandscapeRight {
+            tableView.contentInset = UIEdgeInsetsMake(32.0, 0.0, 0.0, 0.0)
+        } else {
+            tableView.contentInset = UIEdgeInsetsMake(66.0, 0.0, 0.0, 0.0)
+        }
     }
 
 
