@@ -1,5 +1,5 @@
 //
-//  MemeTableViewController.swift
+//  MemeCollectionViewController.swift
 //  MemeApp
 //
 //  Created by Leo Picado on 7/26/15.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class MemeTableViewController: UITableViewController {
+class MemeCollectionViewController: UICollectionViewController {
     var memes:[Meme]!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -21,7 +21,6 @@ class MemeTableViewController: UITableViewController {
         let appDelegate = object as! AppDelegate
         memes = appDelegate.memes
         
-        // Test
         let img = UIImage(named: "test")!
         var testMeme = Meme(textTop: "arriba", textBottom: "abajo", image: img, memedImage: img)
         memes.append(testMeme)
@@ -35,35 +34,34 @@ class MemeTableViewController: UITableViewController {
         memes.append(testMeme)
         memes.append(testMeme)
         memes.append(testMeme)
-        memes.append(testMeme)
-        // Test
         
-        tableView.contentInset = UIEdgeInsetsMake(71.0, 0.0, 45.0, 0.0)
-        self.tableView.reloadData()
+        collectionView?.contentInset = UIEdgeInsetsMake(61.0, 0.0, 35.0, 0.0)
+        self.collectionView?.reloadData()
     }
 
-    // MARK: - Table view data source
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // MARK: UICollectionViewDataSource
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return memes.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("memeCell", forIndexPath: indexPath) as! MemeTableViewCell
-
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("memeCell", forIndexPath: indexPath) as! MemeCollectionViewCell
         let meme = memes[indexPath.row]
-        cell.imgView.image = meme.memedImage
-        cell.lblTop.text = meme.textTop
-        cell.lblBottom.text = meme.textBottom
+        cell.backgroundColor = UIColor.lightTextColor()
+        cell.imageView.image = meme.memedImage
         return cell
+    }
+
+    // MARK: UICollectionViewDelegate
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        println(indexPath.row)
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if toInterfaceOrientation == .LandscapeLeft || toInterfaceOrientation == .LandscapeRight {
-            tableView.contentInset = UIEdgeInsetsMake(37.0, 0.0, 45.0, 0.0)
+            collectionView?.contentInset = UIEdgeInsetsMake(27.0, 0.0, 35.0, 0.0)
         } else {
-            tableView.contentInset = UIEdgeInsetsMake(71.0, 0.0, 45.0, 0.0)
+            collectionView?.contentInset = UIEdgeInsetsMake(61.0, 0.0, 35.0, 0.0)
         }
     }
-
-
 }
