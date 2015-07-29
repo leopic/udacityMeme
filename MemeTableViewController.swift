@@ -9,6 +9,7 @@
 import UIKit
 
 class MemeTableViewController: UITableViewController {
+    
     var memes:[Meme]!
     
     // MARK: View controller lifecycle
@@ -19,7 +20,6 @@ class MemeTableViewController: UITableViewController {
         memes = appDelegate.memes
         tableView.contentInset = UIEdgeInsetsMake(71.0, 0.0, 45.0, 0.0)
         self.tableView.reloadData()
-        self.navigationController?.navigationBar.backgroundColor = .whiteColor()
         self.navigationController?.navigationBar.tintColor = .redColor()
     }
     

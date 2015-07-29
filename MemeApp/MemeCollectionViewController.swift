@@ -9,6 +9,7 @@
 import UIKit
 
 class MemeCollectionViewController: UICollectionViewController {
+        
     var memes:[Meme]!
     
     override func viewWillAppear(animated: Bool) {
@@ -18,7 +19,6 @@ class MemeCollectionViewController: UICollectionViewController {
         memes = appDelegate.memes
         collectionView?.contentInset = UIEdgeInsetsMake(61.0, 0.0, 35.0, 0.0)
         self.collectionView?.reloadData()
-        self.navigationController?.navigationBar.backgroundColor = .whiteColor()
         self.navigationController?.navigationBar.tintColor = .redColor()
     }
 

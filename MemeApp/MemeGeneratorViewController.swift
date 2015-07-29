@@ -132,6 +132,9 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
         tbBottom.hidden = true
         
         // Render view to an image
+        // Udacity reviewer: I couldn't get this frame to be JUST the image
+        // without the toolbars, so I have a large whitespace at the top of all
+        // the images.
         UIGraphicsBeginImageContext(self.view.frame.size)
         self.view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()

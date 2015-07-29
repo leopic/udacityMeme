@@ -281,6 +281,9 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="BBN-ar-AZd">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="selectedImageTintColor" cocoaTouchSystemColor="darkTextColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="dIk-zE-X3S" kind="relationship" relationship="viewControllers" id="0Eb-ts-g0n"/>
@@ -297,4 +300,5 @@
         <image name="List" width="30" height="30"/>
         <image name="Splash" width="1024" height="1024"/>
     </resources>
+    <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>
