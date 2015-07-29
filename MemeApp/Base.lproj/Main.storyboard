@@ -17,10 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VF8-KZ-vO0" userLabel="Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VF8-KZ-vO0" userLabel="Image">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hn2-Vj-ZSD" userLabel="Toolbar Top">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hn2-Vj-ZSD" userLabel="Toolbar Top">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ZMe-Xz-Kdr"/>
@@ -39,7 +39,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="TOP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gld-dk-jGz" userLabel="Top">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="TOP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gld-dk-jGz" userLabel="Top">
                                 <rect key="frame" x="16" y="75" width="568" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="Lb3-kS-WIS"/>
@@ -47,7 +47,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" spellCheckingType="no"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="BOTTOM" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fEO-79-g2F" userLabel="Bottom">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="BOTTOM" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fEO-79-g2F" userLabel="Bottom">
                                 <rect key="frame" x="16" y="486" width="568" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="YeC-6n-w1i"/>
@@ -55,7 +55,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9X-zt-xlK" userLabel="Toolbar Bottom">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u9X-zt-xlK" userLabel="Toolbar Bottom">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
                                     <barButtonItem title="Album" id="NlF-c7-qlM">
@@ -93,6 +93,11 @@
                             <constraint firstItem="Hn2-Vj-ZSD" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" id="v32-3x-Whn"/>
                             <constraint firstItem="Gld-dk-jGz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="zLR-q4-8Be"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="R6o-r7-dYk"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="btnCancel" destination="BVM-bS-uw5" id="cK5-xr-RbE"/>
@@ -118,6 +123,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="Y0h-Vv-S6q">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="memeCell" rowHeight="75" id="NZt-oK-xGu" customClass="MemeTableViewCell" customModule="MemeApp" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -153,7 +163,7 @@
                             <outlet property="delegate" destination="dIk-zE-X3S" id="DZf-Nv-njd"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" systemItem="more" id="jNt-kM-C9J"/>
+                    <tabBarItem key="tabBarItem" title="List" image="List" id="jNt-kM-C9J"/>
                     <navigationItem key="navigationItem" id="JWr-Wn-8UL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wwi-6O-FdN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -198,11 +208,44 @@
                             <outlet property="delegate" destination="bxb-PE-mf7" id="utt-EV-6FY"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="RUw-cw-Q0d"/>
+                    <tabBarItem key="tabBarItem" title="Grid" image="Grid" id="RUw-cw-Q0d"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J93-Qw-2DK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2863" y="1103"/>
+        </scene>
+        <!--MemeDetailViewController-->
+        <scene sceneID="eFk-3q-L4R">
+            <objects>
+                <viewController storyboardIdentifier="MemeDetailViewController" title="MemeDetailViewController" id="yzw-te-EQ5" customClass="MemeDetailViewController" customModule="MemeApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QdM-4F-LSe"/>
+                        <viewControllerLayoutGuide type="bottom" id="va9-DP-l5m"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jEo-p8-Em3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t5k-3U-uTc">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ySL-AY-eWy">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="yov-sC-ces">
+                            <connections>
+                                <action selector="tapOnShareBtn:" destination="yzw-te-EQ5" id="MAr-UZ-uoa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="memedImage" destination="t5k-3U-uTc" id="uRN-WZ-Z2f"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tk8-X7-qQk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2535" y="1846"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zzf-jZ-R7C">
@@ -249,4 +292,8 @@
             <point key="canvasLocation" x="2535" y="343"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Grid" width="30" height="30"/>
+        <image name="List" width="30" height="30"/>
+    </resources>
 </document>

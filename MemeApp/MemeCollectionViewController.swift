@@ -10,31 +10,12 @@ import UIKit
 
 class MemeCollectionViewController: UICollectionViewController {
     var memes:[Meme]!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         memes = appDelegate.memes
-        
-        let img = UIImage(named: "test")!
-        var testMeme = Meme(textTop: "arriba", textBottom: "abajo", image: img, memedImage: img)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        memes.append(testMeme)
-        
         collectionView?.contentInset = UIEdgeInsetsMake(61.0, 0.0, 35.0, 0.0)
         self.collectionView?.reloadData()
     }
@@ -54,8 +35,9 @@ class MemeCollectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDelegate
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        println(indexPath.row)
-    }
+        let memeDetailVC = self.storyboard!.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
+        memeDetailVC.meme = memes[indexPath.row]
+        self.navigationController!.pushViewController(memeDetailVC, animated: true)    }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if toInterfaceOrientation == .LandscapeLeft || toInterfaceOrientation == .LandscapeRight {
