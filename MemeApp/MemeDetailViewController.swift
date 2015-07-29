@@ -17,6 +17,8 @@ class MemeDetailViewController:UIViewController {
         super.viewWillAppear(animated)
         memedImage.image = meme.memedImage
         self.navigationItem.title = meme.textTop
+        self.navigationController?.navigationBar.backgroundColor = .whiteColor()
+        self.navigationController?.navigationBar.tintColor = .redColor()
     }
     
     @IBAction func tapOnShareBtn(sender:AnyObject) {

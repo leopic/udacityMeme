@@ -20,6 +20,9 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
     @IBOutlet var tbTop:UIToolbar!
     @IBOutlet var tbBottom:UIToolbar!
     
+    let textTop = "TOP"
+    let textBottom = "BOTTOM"
+    
     var memeAppTextFieldDelegate = MemeAppTextFieldDelegate()
     
     // MARK: View controller lifecycle
@@ -35,7 +38,6 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
         txtBottom.textAlignment = memeAppTextFieldDelegate.textAlignment
         
         resetUI()
-        subscribeToKeyboardNotifications()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -46,6 +48,7 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         btnPickCamera.enabled = UIImagePickerController.isSourceTypeAvailable(.Camera)
+        subscribeToKeyboardNotifications()
     }
     
     // MARK: UIImagePickerControllerDelegate
@@ -55,11 +58,40 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
             imgView.image = selectedImage
         }
         
-        handleShareBtnVisibility()
         self.dismissViewControllerAnimated(true, completion: nil)
+        updateUI()
     }
     
     // MARK: Keyboard sliding
+    /**
+    The height of the keyboard can come from multiple places, ie: bluetooth
+    keyboards, custom keyboards, so it's best to calculate it.
+    
+    :param: notification fired from `UIKeyboardWillShowNotification`
+    
+    :returns: height of the current keyboard on screen
+    */
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.CGRectValue().height
+    }
+    
+    /**
+    Slide the frame down.
+    */
+    func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y += getKeyboardHeight(notification)
+        updateUI()
+    }
+    
+    /**
+    Slide the frame up.
+    */
+    func keyboardWillShow(notification: NSNotification) {
+        self.view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+    
     func subscribeToKeyboardNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:",
             name: UIKeyboardWillShowNotification, object: nil)
@@ -72,27 +104,6 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
             UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:
             UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    /**
-    Slide the frame down.
-    */
-    func keyboardWillHide(notification: NSNotification) {
-        view.frame.origin.y += getKeyboardHeight(notification)
-        handleShareBtnVisibility()
-    }
-    
-    /**
-    Slide the frame up.
-    */
-    func keyboardWillShow(notification: NSNotification) {
-        view.frame.origin.y -= getKeyboardHeight(notification)
-    }
-    
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.CGRectValue().height
     }
     
     // MARK: Meme specific functionality
@@ -127,18 +138,37 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
         return memedImage
     }
     
+    /**
+    Checks if all necessary fields for a Meme are complete
+    
+    :returns: result of evaluation
+    */
+    func validateMeme() -> Bool {
+        if let top = txtTop.text, bottom = txtBottom.text, image = imgView.image {
+            return !top.isEmpty && !bottom.isEmpty && top != textTop && bottom != textBottom
+        } else {
+            return false
+        }
+    }
+    
     // MARK: User interactions
     @IBAction func tapOnPickCameraBtn() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .Camera
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        pickAnImageUsing(.Camera)
     }
     
     @IBAction func tapOnPickAlbumBtn() {
+        pickAnImageUsing(.PhotoLibrary)
+    }
+    
+    /**
+    Displays a `UIImagePickerController`.
+    
+    :param: sourceType:UIImagePickerControllerSourceType to use.
+    */
+    func pickAnImageUsing(sourceType:UIImagePickerControllerSourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .PhotoLibrary
+        imagePicker.sourceType = sourceType
         self.presentViewController(imagePicker, animated: true, completion: nil)
     }
     
@@ -151,15 +181,12 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
             let activityVC = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: nil)
             
             activityVC.completionWithItemsHandler = {(activityType, completed, sender, error) in
-                if completed {
-                    if var appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                        appDelegate.memes.append(meme)
-                        self.navigationController?.popToRootViewControllerAnimated(true)
-                        self.resetUI()
-                    }
+                if var appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate where completed {
+                    appDelegate.memes.append(meme)
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                    self.resetUI()
                 }
             }
-            
             presentViewController(activityVC, animated: true, completion: nil)
         } else {
             let alert = UIAlertView()
@@ -174,34 +201,34 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
     // MARK: Utils
     
     /**
-    Reset UI to it's initial state.
+    Reset the UI to it's initial state.
     */
     func resetUI() {
-        btnShare.enabled = false
         imgView.image = nil
-        txtTop.text = "TOP"
-        txtBottom.text = "BOTTOM"
+        txtTop.text = textTop
+        txtBottom.text = textBottom
+        btnCancel.enabled = false
+        btnShare.enabled = false
     }
     
     /**
-    Checks if all necessary fields for a Meme are complete
+    Updates the state of the share and cancel buttons.
+    */
+    func updateUI() {
+        btnShare.enabled = validateMeme()
+        btnCancel.enabled = userHasInteracted()
+    }
+    
+    /**
+    Checks if the user has interacted with any of the controls on the view.
     
     :returns: result of evaluation
     */
-    func validateMeme() -> Bool {
-        if let top = txtTop.text, bottom = txtBottom.text, image = imgView.image, memedImage = generateMemedImage() {
-            return !top.isEmpty && !bottom.isEmpty
+    func userHasInteracted() -> Bool {
+        if let top = txtTop.text, bottom = txtBottom.text {
+            return top.isEmpty || bottom.isEmpty || imgView.image != nil
         } else {
             return false
-        }
-    }
-    
-    /**
-    Enable share button if all fields are complete
-    */
-    func handleShareBtnVisibility() {
-        if validateMeme() {
-            btnShare.enabled = true
         }
     }
 }
