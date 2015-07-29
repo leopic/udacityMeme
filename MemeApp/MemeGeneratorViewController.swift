@@ -72,9 +72,14 @@ class MemeGeneratorViewController: UIViewController, UIImagePickerControllerDele
     :returns: height of the current keyboard on screen
     */
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.CGRectValue().height
+        if let userInfo = notification.userInfo,
+            keyboardSize = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+                if txtBottom.isFirstResponder() {
+                    return keyboardSize.CGRectValue().height
+                }
+        }
+        
+        return 0
     }
     
     /**
